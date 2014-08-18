@@ -21,12 +21,18 @@
       "url": "https://github.com/bitbonsai/cssi/blob/master/LICENSE-MIT"
     }
   ],
-  "main": "lib/cssi",
+  "main": "./lib/cssi.js",
   "engines": {
     "node": ">= 0.8.0"
   },
   "scripts": {
-    "test": "grunt nodeunit"
+    "test": "grunt nodeunit",
+    "lint": "jshint --verbose bin/ lib/ test/"
+  },
+  "jshintConfig": {
+    "node": true,
+    "strict": true,
+    "validthis": true
   },
   "devDependencies": {
     "grunt-contrib-jshint": "~0.6.4",
@@ -34,5 +40,21 @@
     "grunt-contrib-watch": "~0.5.3",
     "grunt": "~0.4.5"
   },
-  "keywords": []
+  "preferGlobal": "true",
+  "bin": {
+    "cssi": "./bin/cssi.js"
+  },
+  "keywords": [
+    "css",
+    "analyzer",
+    "complexity",
+    "webperf"
+  ],
+  "dependencies": {
+    "colors": "^0.6.2",
+    "css-parse": "^2.0.0",
+    "event-emitter": "^0.3.1",
+    "exec-queue": "0.0.2",
+    "minimist": "^1.1.0"
+  }
 }
