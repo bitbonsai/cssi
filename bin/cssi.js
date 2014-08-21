@@ -54,8 +54,8 @@ colors.setTheme({
 
 (function init () {
 /* TODO: 
-    [ ] help on a separate file
-    [ ] html report com template
+    [ ] --out html report com template
+    [ ] --tpl glob para arquivos para pesquisar
 */
 
     // listeners
@@ -64,12 +64,17 @@ colors.setTheme({
     emitter.on('parseRules_ok', testGit);
     emitter.on('testGit_ok', grepCss);
     emitter.on('grepCss_ok', gitLogAllTheThings);
-    emitter.on('gitLogAllTheThings_ok', function () { console.log(logs) });
+    emitter.on('gitLogAllTheThings_ok', createReport);
 
     // override dbg if used as an argument
     if (opt.debug) {
         dbg = opt.debug;
         log('[d] dbg: %d', dbg);
+    }
+
+    //tpl override
+    if (opt.tpl) {
+        files_to_grep = opt.tpl;
     }
 
     // check if it's a dir, file or url
@@ -138,7 +143,18 @@ function request(requestOptions, callback) {
 // show Usage TODO: load from external file
 function help () {
     
-    log('HELP!'.ok);
+    var h = [];
+    h.push('Usage: cssi --css bla.css --repo /path/to/repo'.error);
+    h.push('--css'.debug + '     [file | dir | url]'.cyan);
+    h.push('--repo'.debug + '    [/full/path/to/local/repo]'.cyan);
+    h.push('--reverse'.debug + ' finds not the last, but the first commit where the selector was changed');
+    h.push('--exclude'.debug + ' [bicon]'.cyan + ' exclude string from selectors, useful to avoid known false positives - ie: icon fonts');
+    h.push('--tpl'.debug + '     ["*.ext"]'.cyan + ' glob of files that should be checked for selectors. Default: "\'*.tmpl\' \'*.inc\' \'*.js\'"');
+    h.push('--debug'.debug + '   shows extra debug information');
+    h.push('--out'.debug + '     [filename.html]'.cyan + ' different report filename. Default is a normalized version of css_path-filename.html');
+    h.push('More info at https://github.com/bitbonsai/cssi'.warn);
+
+    console.log(h.join('\n'));
 }
 
 // Check if file is dir, file or url
@@ -360,6 +376,10 @@ function grepCss () {
     // unite all selectors
     var all_s = sels['ids'].concat(sels['classes']);
 
+    if (opt.exclude) {
+        log('[s] --exclude detected. Will not match selectors with "%s"', opt.exclude);
+    }
+
     all_s.forEach(function (sel, idx) {
         grepMe(sel, idx, (all_s.length -1), ids_len);
     });
@@ -367,11 +387,14 @@ function grepCss () {
 
 function grepMe (str, idx, all_len, ids_len) {
     var id_or_class,
-        ghost_key;
+        ghost_key,
+        cmd;
 
     log('[d] grepping %s', str);
 
-    run("cd "+ repo +" && git grep -q '"+ str +"' -- " + files_to_grep, function (err) {
+    cmd = "cd "+ repo +" && git grep -q '"+ str +"' -- " + files_to_grep;
+
+    run(cmd, function (err) {
 
         if (err) {
             if (idx < ids_len) {
@@ -382,10 +405,17 @@ function grepMe (str, idx, all_len, ids_len) {
                 ghost_key = 'classes';
             }
 
-            ghosts[ghost_key].push(str);
-            ghosts_len++;
-            log('[w] NOT FOUND: '+ id_or_class +'%s', str);
-
+            if (opt.exclude) {
+                if (str.indexOf(opt.exclude) < 0) {
+                    ghosts[ghost_key].push(str);
+                    ghosts_len++;
+                    log('[w] NOT FOUND: '+ id_or_class +'%s', str);
+                }
+            } else {
+                ghosts[ghost_key].push(str);
+                ghosts_len++;
+                log('[w] NOT FOUND: '+ id_or_class +'%s', str);
+            }
         }
         if (ghosts_count === all_len) {
             emitter.emit('grepCss_ok');
@@ -421,9 +451,12 @@ function logMe (str, idx, prefix) {
 
     var ghost_key = (prefix === '#') ? 'ids' : 'classes',
         otmp = {},
-        reverse = (opt.reverse) ? '--reverse' : '';
+        reverse = (opt.reverse) ? '--reverse' : '',
+        cmd;
 
-    run("cd "+ repo +" && git log -S"+ str +" "+ reverse +" --format='%h||%s||%aN||%ar' -- '*.css' | head -1", function (err, out) {
+    cmd = "cd "+ repo +" && git log -S"+ str +" "+ reverse +" --format='%h||%s||%aN||%ar' -- '*.css' | head -1";
+    
+    run(cmd, function (err, out) {
         if (err) {
             log('[e] %s', err);
             return;
@@ -447,4 +480,12 @@ function logMe (str, idx, prefix) {
             emitter.emit('gitLogAllTheThings_ok');
         }
     });
+}
+
+function reportName () {
+    return opt.css.replace('//','').replace(':','').replace('/','-').replace('.css','.html');
+}
+
+function createReport () {
+    log('[s] Reported generated on %s', reportName());
 }
