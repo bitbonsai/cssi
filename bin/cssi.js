@@ -54,11 +54,6 @@ colors.setTheme({
 });
 
 (function init () {
-/* TODO: 
-    [ ] --out html report com template
-    [ ] --tpl glob para arquivos para pesquisar
-*/
-
     // listeners
     emitter.on('getCss_ok', parseCss);
     emitter.on('parseCss_ok', parseRules);
