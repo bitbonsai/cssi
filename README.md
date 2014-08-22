@@ -18,11 +18,11 @@ cssi
 ```
 
 ## Examples
-`cssi --css css/sample_gen_profile.css --repo /Users/local_repo/ --exclude bicon`
-`cssi --css css/ --repo /Users/local_repo/`
-`cssi --css css/ --repo /Users/local_repo/ --tpl "'*.html' '*.php'" --out myreportname.html`
-`cssi --css css/ --repo /Users/local_repo/ --reverse`
-`cssi --css http://example.com/site.css --repo /Users/local_repo/ --debug 1`
+1. `cssi --css css/sample_gen_profile.css --repo /Users/local_repo/ --exclude bicon`
+2. `cssi --css css/ --repo /Users/local_repo/`
+3. `cssi --css css/ --repo /Users/local_repo/ --tpl "'*.html' '*.php'" --out myreportname.html`
+4. `cssi --css css/ --repo /Users/local_repo/ --reverse`
+5. `cssi --css http://example.com/site.css --repo /Users/local_repo/ --debug 1`
 
 
 ## Contributing
