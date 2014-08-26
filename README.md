@@ -30,8 +30,8 @@ cssi
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-- 0.1.0 - BrazilJS 2014 version
-- 0.2.0 - Added option to load config file
+- 0.2.x - Added option to load config file
+- 0.1.x - BrazilJS 2014 version
 
 ## License
 Copyright (c) 2014 Mauricio Wolff  

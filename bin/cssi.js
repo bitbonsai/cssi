@@ -521,7 +521,16 @@ function logMe (str, idx, prefix) {
 }
 
 function reportName () {
-    report_name = opt.css.replace('//','').replace(':','').replace('/','-').replace('.css','.html');
+    var url = '';
+
+    if (css_type === 'url') {
+        url = opt.css.split('/');
+        report_name = './' + url[url.length -1];
+        report_name = (report_name.indexOf('.css') > -1) ? report_name.replace('.css', '.html') : report_name + '.html';
+    } else {
+        report_name = opt.css.replace('.css','.html');
+    }
+
     return report_name;
 }
 
@@ -557,7 +566,7 @@ function createReport () {
         tpl = tpl.replace(/\{filename\}/g, report_name).replace('{params}', params.join('')).replace('{trs}', trs.join(''));
     }
 
-    fs.writeFileSync('./' + report_name, tpl, {"encoding": "utf-8"});
+    fs.writeFileSync(report_name, tpl, {"encoding": "utf-8"});
 
     log('[s] Report generated on %s', report_name);
     emitter.emit('createReport_ok');
