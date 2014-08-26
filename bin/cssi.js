@@ -188,7 +188,7 @@ function help () {
     h.push('--tpl'.debug + '     ["*.ext"]'.cyan + ' glob of files that should be checked for selectors. Default: "\'*.tmpl\' \'*.inc\' \'*.js\'"');
     h.push('--debug'.debug + '   shows extra debug information');
     h.push('--out'.debug + '     [filename.html]'.cyan + ' different report filename. Default is a normalized version of css_path-filename.html');
-    h.push('--config'.debug + '     [filename.json]'.cyan + ' load or replace arguments from config file (must be valid json)');
+    h.push('--config'.debug + '  [filename.json]'.cyan + ' load or replace arguments from config file (must be valid json)');
     h.push('More info at https://github.com/bitbonsai/cssi'.warn);
     h.push('');
 
