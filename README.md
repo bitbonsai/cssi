@@ -31,6 +31,7 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 0.1.0 - BrazilJS 2014 version
+0.2.0 - Added option to load config file
 
 ## License
 Copyright (c) 2014 Mauricio Wolff  
