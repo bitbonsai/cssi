@@ -179,7 +179,8 @@ function help () {
     
     var h = [];
     h.push('');
-    h.push('Usage: cssi --css bla.css --repo /path/to/repo'.warn);
+    h.push('CSSI: '.debug + require('../package.json').version.cyan);
+    h.push('Usage:'.warn + ' cssi --css bla.css --repo /path/to/repo');
     h.push('--css'.debug + '     [file | dir | url]'.cyan);
     h.push('--repo'.debug + '    [/full/path/to/local/repo]'.cyan);
     h.push('--reverse'.debug + ' finds not the last, but the first commit where the selector was changed');

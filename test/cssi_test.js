@@ -22,6 +22,7 @@ var cssi = require('../lib/cssi.js');
     test.ifError(value)
 */
 
+// DUMMY tests... gotta take time to do them for real... :(
 exports['awesome'] = {
   setUp: function(done) {
     // setup here
