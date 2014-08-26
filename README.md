@@ -15,14 +15,15 @@ cssi
 --tpl ["*.ext"] glob of files that should be checked for selectors. Default: "'*.tmpl' '*.inc' '*.js'"
 --debug shows extra debug information
 --out [filename.html] different report filename. Default is a normalized version of css_path-filename.html
+--config [file.json] load or replace arguments from config file (must be valid json)
 ```
 
 ## Examples
 1. `cssi --css css/sample_gen_profile.css --repo /Users/local_repo/ --exclude bicon`
 2. `cssi --css css/ --repo /Users/local_repo/`
-3. `cssi --css css/ --repo /Users/local_repo/ --tpl "'*.html' '*.php'" --out myreportname.html`
-4. `cssi --css css/ --repo /Users/local_repo/ --reverse`
-5. `cssi --css http://example.com/site.css --repo /Users/local_repo/ --debug 1`
+3. `cssi --css css/ --repo /Users/local_repo/ --tpl "'*.html' '*.php'" --out myreportname.html --reverse`
+4. `cssi --css css/ --repo /Users/local_repo/ --config filename.json`
+5. `cssi --css http://example.com/site.css --repo /Users/local_repo/ --debug`
 
 
 ## Contributing
