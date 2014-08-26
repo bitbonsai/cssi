@@ -68,6 +68,11 @@ colors.setTheme({
         log('[d] dbg: %d', dbg);
     }
 
+    // load config file and ignore options passed as arguments
+    if (opt.config) {
+        loadConfig(opt.config);
+    }
+
     //tpl override
     if (opt.tpl) {
         files_to_grep = opt.tpl;
@@ -79,6 +84,8 @@ colors.setTheme({
     } else {
         css_type = checkCss(opt.css);
         repo = checkRepo(opt.repo);
+
+        log('[d] opt: \n%s', JSON.stringify(opt));
 
         log('[s] Getting css: %s...'.ok, opt.css);
         getCss(css_type);
@@ -101,6 +108,37 @@ function log (msg, data) {
                 console.log(addColors(msg), data);
             }
         }
+    }
+}
+
+function loadConfig (config_file) {
+    var config,
+        cfg,
+        c,
+        args = [];
+
+    try {
+        config = fs.readFileSync(config_file, 'utf-8');
+        cfg = JSON.parse(config);
+
+        for (c in cfg) {
+            opt[c] = cfg[c];
+            args.push('--' + c + ': ' + cfg[c]);
+        }
+
+        log('[s] --config file ('+ opt.config +') loaded following arguments: %s', args.join(', '));
+
+    } catch (e) {
+        if (e.code === 'ENOENT') {
+            log('[e] Config file not found');
+        } else if (e.toString().indexOf('SyntaxError') > -1) {
+            log('[e] Config file is not a valid JSON object');
+            log('[e] JSON error: %s', e.toString());
+        } else {
+            log('[e] Error in loadConfig');
+        }
+        help();
+        process.exit(1);
     }
 }
 
@@ -140,7 +178,8 @@ function request(requestOptions, callback) {
 function help () {
     
     var h = [];
-    h.push('Usage: cssi --css bla.css --repo /path/to/repo'.error);
+    h.push('');
+    h.push('Usage: cssi --css bla.css --repo /path/to/repo'.warn);
     h.push('--css'.debug + '     [file | dir | url]'.cyan);
     h.push('--repo'.debug + '    [/full/path/to/local/repo]'.cyan);
     h.push('--reverse'.debug + ' finds not the last, but the first commit where the selector was changed');
@@ -149,6 +188,7 @@ function help () {
     h.push('--debug'.debug + '   shows extra debug information');
     h.push('--out'.debug + '     [filename.html]'.cyan + ' different report filename. Default is a normalized version of css_path-filename.html');
     h.push('More info at https://github.com/bitbonsai/cssi'.warn);
+    h.push('');
 
     console.log(h.join('\n'));
 }
@@ -184,7 +224,7 @@ function checkRepo (repo_path) {
 
     if (!ok) {
         log('[e] The git repo %s couldn\'t be found.', opt.repo);
-        log('[e] Please provide an existing path for the git repo (not URLs)')
+        log('[e] Please provide an existing path for the git repo (not URLs)');
         process.exit(255);
     } else {
         return repo_path;
