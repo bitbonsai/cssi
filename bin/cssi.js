@@ -8,7 +8,7 @@
   \___|___/___/_|
 
 
- * CSsI - CSS Selectors Scene Investigation
+ * CSSI: - CSS Selectors Scene Investigation
  * https://github.com/bitbonsai/cssi
  *
  * Copyright (c) 2014 Mauricio Wolff
@@ -188,6 +188,7 @@ function help () {
     h.push('--tpl'.debug + '     ["*.ext"]'.cyan + ' glob of files that should be checked for selectors. Default: "\'*.tmpl\' \'*.inc\' \'*.js\'"');
     h.push('--debug'.debug + '   shows extra debug information');
     h.push('--out'.debug + '     [filename.html]'.cyan + ' different report filename. Default is a normalized version of css_path-filename.html');
+    h.push('--link'.debug + '  ["https://github.com/bitbonsai/cssi/commit/{sha}"]'.cyan + ' link to web git show. Can be any valid URL, {sha} is replaced with commit hash');
     h.push('--config'.debug + '  [filename.json]'.cyan + ' load or replace arguments from config file (must be valid json)');
     h.push('More info at https://github.com/bitbonsai/cssi'.warn);
     h.push('');
@@ -523,26 +524,33 @@ function logMe (str, idx, prefix) {
 function reportName () {
     var url = '';
 
-    if (css_type === 'url') {
-        url = opt.css.split('/');
-        report_name = './' + url[url.length -1];
-        report_name = (report_name.indexOf('.css') > -1) ? report_name.replace('.css', '.html') : report_name + '.html';
+    if (opt.out) {
+        if (opt.out.indexOf('.html') < 0) {
+            report_name = opt.out + '.html';
+        } else {
+            report_name = opt.out;
+        }
     } else {
-        report_name = opt.css.replace('.css','.html');
+        if (css_type === 'url') {
+            url = opt.css.split('/');
+            report_name = './' + url[url.length -1];
+            report_name = (report_name.indexOf('.css') > -1) ? report_name.replace('.css', '.html') : report_name + '.html';
+        } else {
+            report_name = opt.css.replace('.css','.html');
+        }
     }
 
     return report_name;
 }
 
-// TODO: get file from lib/report_tpl.html (resolve module?)
 function createReport () {
-    var tpl = '<!DOCTYPE html> <html lang=en> <head> <meta charset=UTF-8> <title>CSSI Report {filename}</title> <style>body{font-family:sans-serif}table{border:1px solid #ddd;border-collapse:collapse;width:100%}tbody tr:nth-child(odd){background-color:#fafafa}th,td{border:1px solid #ddd;padding:5px;text-align:left}th{background-color:#ccc}.logo{float:right}</style> </head> <body><img class=logo alt=cssi src=data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAFwAAABECAYAAAAMalKuAAAIIklEQVR4Ae1aa6hVRRQ+pubNVz6zslRKiupH4Y/KykeZIQhlqPXDKHpiKUEUSSAUKGRB9qPCXtKPRKikroWlkCVkpVnmo8xKIwxTS/PF1Ws+6vv0znXOnLVmnz17n33uOfsu+JiZNWvWzHx7z3PvDoVw6YminZzizUgfcnT1kDwbnejodOQw0kRFZSy8NwIHgf8EzIWuHmUzOiX1dzv084CL0u50AxwuBKRKbV3eCDd958ienhbpHEqflkE2K88r4Yb4GWmQPrtMstsJLxSOgauRPtI7+DKRNxDYCnQR7N6HbgGw18r7A3Ha15tcjQ51bekUORsEPAlc3qKzgzVI0D5InkUpM1zscBn0UQ8rqMIaKsSXcTdg82LiI0L7sUFxODTUYZ2Ve0zhZ05IPzmEzBOzwy0hzuq0DKcUmxsTX6H19wwtA/pzlLzvFH0e1ZvQ6Sah4xp3BR/hvQRHVNmLpGKSK7XER2+NAR/hWt4BzVlO9RIf6oZCI9XHHeepdjnNwPHT0ehYCOHRXtstVAbc2z7VMOMMDsn+wPkAb+p2ATuA/UBNS1sivBuYvB24DRgHdAdc4Ul2McAby+VuZq2nh6EDZl9ph8+l3DE+9KkA32C7nqj4atiPAqot0uFwp9aoas/hF6JhJI53yudqjVT0vK9YAbwGdAZqQqpJ+DVgiBc9HElJ5CEU5vTSJ4mTrMpWi3DexXwMDEipoyPg5wOgzb/p1SC8B4j5ENDeyD+RNwu4FugHkETezI0H5gNHAEl4D/2ylFErOg51aeFKumjyJk3yewL62cBZgE8GI3MpIPmgzvsBwOc4MG+D0BZ10fTVUQnCuUgeFhrILyWTfI1x8vjZj4ulRPoqx7bSyViE+6YUX15oJx5FwQah8AzoFgl6TXUcGY8A/NbqChfj0a4y4zRfCFF8pGq3hRz6oTJBKLgeuhcFfZSKpE8FjgqGUj2CWSoqjjJXeDoWxUf4BWKJQmGfoo9S87KeuxNXuCaEPsStKPuu6xBpnlazEokPLvRc8EvER/jwEutTir8VfZT6MsGAb+cSQR9H1SgYD4EuavEVigWp9iiluMsqEY1w3mNMLLE+pfhe0UepeRHlCu9GDrjKmOkfFPvzFH3a6l8Uh1MkvUb4NBj3FQrwvmOdoC9Hxds/V0JHi+1H8yHVZ5dLK75McXQH9Je6eRLhvWH0uGvYkp6HUFokFPMitTT0+hRZhCU0H/+EuYtdaiVKbBNKkdunBX2RqhdSXwDS/pZvd88i63gJPnHXbzN0XeO5KbG+VfDLerqVWFZOwfsct28m/ZRbLS/7eXR+APgdMIZ2yC3YLUASuQqFbZ8mzjvwJPImChtfJtyexGFAWb7NPBOY+t2Q90ZjAL7QJ7dqroGdPgabu2mYgnDo2b4Z/zKBXy7ETYLPVxP4DC3KNY+/kLj9s9O/0jn3xrbSjpMMcXvDggHyEsrY/k383gBfLPKe4m9coL+kxTiNvQDsB0zf7NBL+DsolPbW6hL4PCo0hnP5aCCOzIax3RkT3wg9h3g1hbuTzYBpkwm9hNOIczeHZ9KFDS5a5RXETAPs8F/opwNRZHEX9bbig/64OFdLeqBirimchu2+mfhJwocgU5oHjRFD7lzSIp1HXmkuN/XxIPMwMAgwP9R0QnwYMAvgds/YuiHzOI/yoWQtrPNbwG2TnWbbWmU4YssB28COz2+1TB7hjiXqIbPuIwAPNhxpdlukuO2PHc+a9CWeNr6BvIuBEuEbZQ43UqeuKykRruDCxmO9VE9c3SHBD0k/uQ1DWGm5BxVobX4wqnLOoV8pDvgU05Qr4GwroDW2HL1vilkD35UmndOd1ge+2WUJL/GlznJh48KQpnSHs2eAg4BUp6bbAvv7gbUR5b5Bvno/jbykMhoOpDaSq8FxnK9THI2P4ySG7QDYPgFwgdbmbD6URcAUoDNA4V0KbzClThvdauRXivTnlbpfhz6WzIG1abAdcgdRaeE0cCXAef5O4EaAe9sugCR9odReENP2VbDpKRVOqGtEeVOHHd4c1+9kxdHMuI4ysifp65U2GyK+Rn7apPM0bvzboViP75DB7Zgkac/hUh0huj0oNAbY6CnMa4qlQJp9kHw1ow7uwErERzjny1qT3WgwSde+ArE/PG+kTTr92iKSTQMf4RwetSgcmTcBP3oaz/PEJwB3SJUQlTsf4ZVoSFY+yyH9ejSmkqSLfa1XwtnZvwC+6ZuYUOQG6N9S8iqirmfCSZgh/ScPe5OQxy1nJlLvhJPEXQDf9M1MKJL2vb9SjX/RVAvVYMZOtJmHp5+FtnNHwUNTJpKHN9wQaUjnidNIEyL3AfuMotIhb7ryJDvQWS6UI4F+wEqAuswkb4STWF6MfZ4Zw05FeZpSnK5XJ9lOeMa8hxCex2nI91jMvbzPpjXPR/jRVqviSK/iZO5T0oeNYxorPsJ58yZJZocEqfI2puNo5xcnVzTuXLuiNIfKEYA3Xza4Z+0ItEuhwFtHmxsTVz+2+95wTincp7rCITTWVeY0PVHp92eKPlI9DRbmqdnhNuiloRTpsI4MRqEvnKttXhjnPn8oIIr5lUzMhLIB+A2Q5m0elT8C9gJGOCKoqzfh3wT9WzrFWYG/4U0AzmzR2cFCJPhXQbDQsfsUtfTc4FradkHeNGp9tvW8Dh7o64pvDjflGhGZaRLtocoAvwFPBrarFjEz7oI9P13ZT9SN5/UNXwte+B9NpHAfWa4sgCHnZ/6Ywy/jHDpueS6m9Sj834XbYVv4AynXt8UAt4EngEj5H8SuKJbTwZ8SAAAAAElFTkSuQmCC /><h1>CSSI Report {filename}</h1><ul>{params}</ul> <table> <thead> <tr> <th>Selector</th> <th>Hash</th> <th>Commit Message</th> <th>Author</th> <th>When</th> </tr> </thead> <tbody> {trs} </tbody> </table> </body> </html>';
-    var tr = '<tr> <td>{selector}</td> <td>{hash}</td> <td>{commit_message}</td> <td>{author}</td> <td>{when}</td> </tr>';
+    var tpl = fs.readFileSync(process.mainModule.filename.replace('/bin/cssi.js', '/lib/report_tpl.html'), "utf8");
+    var tr = fs.readFileSync(process.mainModule.filename.replace('/bin/cssi.js', '/lib/report_tpl_tr.html'), "utf8");
     var trs = [];
     var li = '<li><b>{param}</b>: {val}</li>';
     var param;
     var params = [];
-    var i, prop, props = [];
+    var i, prop, props = [], hash;
     
     reportName();
 
@@ -554,7 +562,8 @@ function createReport () {
                 for (prop in l) {
                     // break props down
                     props = l[prop].split('||');
-                    trs.push(tr.replace('{selector}', prop).replace('{hash}', props[0]).replace('{commit_message}', props[1]).replace('{author}', props[2]).replace('{when}', props[3]));
+                    hash = (opt.link && typeof(opt.link) === 'string' && url.parse(opt.link.toString())) ? '<a target="_blank" href="'+ opt.link.replace('{sha}', props[0]) +'">'+ props[0] +'</a>' : props[0];
+                    trs.push(tr.replace('{selector}', prop).replace('{count}', selectors[prop]).replace('{hash}', hash).replace('{commit_message}', props[1]).replace('{author}', props[2]).replace('{when}', props[3]));
                 }
             });
         }
