@@ -32,6 +32,7 @@ var
     css_type = '',
     css = '',
     original_selectors = [],
+    original_selectors_counter = {},
     selectors = {},
     selectors_length = 0,
     sels = { "ids": [], "classes": [] },
@@ -316,6 +317,7 @@ function parseRules () {
 
                     rule.selectors.forEach(function(selector) {
                         original_selectors.push(selector);
+                        original_selectors_counter[selector] = (original_selectors_counter[selector]) ? original_selectors_counter[selector] + 1 : 1;
 
                         // clean up nested and pseudo selectors
                         sel = cleanUpSelector(selector);
@@ -338,7 +340,7 @@ function parseRules () {
 
         log('[d] selectors: \n', selectors);
         log('[d] selectors that git-grep will use: \n', sels);
-        log('[d] original selectors: \n', original_selectors);
+        log('[d] original selectors: \n', original_selectors_counter);
         
         emitter.emit('parseRules_ok');
     }
