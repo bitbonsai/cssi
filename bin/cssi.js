@@ -552,7 +552,7 @@ function createReport () {
     var li = '<li><b>{param}</b>: {val}</li>';
     var param;
     var params = [];
-    var i, prop, props = [], hash;
+    var i, prop, props = [], hash, dupes;
     
     reportName();
 
@@ -574,11 +574,34 @@ function createReport () {
                 params.push(li.replace('{param}', param).replace('{val}', opt[param]));
             }
         }
-        tpl = tpl.replace(/\{filename\}/g, report_name).replace('{params}', params.join('')).replace('{trs}', trs.join(''));
+        dupes = getOriginalDuplicates();
+        log('[d] dupes', dupes);
+        tpl = tpl.replace(/\{filename\}/g, report_name).replace('{params}', params.join('')).replace('{trs}', trs.join('')).replace('{dupes}', dupes);
     }
 
     fs.writeFileSync(report_name, tpl, {"encoding": "utf-8"});
 
     log('[s] Report generated on %s', report_name);
     emitter.emit('createReport_ok');
+}
+
+function getOriginalDuplicates () {
+    var tpl = fs.readFileSync(process.mainModule.filename.replace('/bin/cssi.js', '/lib/dupes_tpl.html'), "utf8");
+    var tr = fs.readFileSync(process.mainModule.filename.replace('/bin/cssi.js', '/lib/dupes_tpl_tr.html'), "utf8");
+    var trs = [];
+    var s;
+
+    if (original_selectors_counter) {
+        for (s in original_selectors_counter) {
+            if (original_selectors_counter[s] > 1) {
+                trs.push(tr.replace('{selector}', s).replace('{count}', original_selectors_counter[s]));
+            }
+        }
+        tpl = tpl.replace('{trs}', trs.join(''));
+    }
+
+    log('[d] Generated original duplicate selectors report');
+    emitter.emit('getOriginalDuplicates_ok');
+
+    return tpl;
 }

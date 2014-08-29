@@ -31,6 +31,7 @@ cssi
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.4.x - Added counter and report for original_selectors
 - 0.3.x - Added --link, js sort to table, selector count
 - 0.2.x - Added option to load config file
 - 0.1.x - BrazilJS 2014 version
