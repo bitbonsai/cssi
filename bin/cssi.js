@@ -240,6 +240,26 @@ function checkRepo (repo_path) {
     }
 }
 
+function getCSSAndReturn (dir) {
+    var files = [], css, cur_file, path;
+
+    // path = opt.css;
+    files = fs.readdirSync(dir);
+        
+    files.forEach(function (file) {
+        cur_file = dir + '/' + file;
+
+        if (fs.lstatSync(cur_file).isFile()) {
+            log('[d] getCSSAndReturn - Getting %s from ' + dir, file);
+            css += fs.readFileSync(cur_file, 'utf-8');
+        } else if (fs.lstatSync(cur_file).isDirectory()) {
+            getCSSAndReturn(cur_file);
+        }
+    });
+
+    return css;
+}
+
 function getCss (css_type) {
     var files = [],
         dir,
@@ -256,10 +276,14 @@ function getCss (css_type) {
         files.forEach(function (file) {
             dir =  path + '/';
             cur_file = dir + file;
-        
-            log('[d] Getting %s from ' + dir, file);
 
-            css += fs.readFileSync(cur_file, 'utf-8');
+            if (fs.lstatSync(cur_file).isFile()) {
+                log('[d] Getting %s from ' + dir, file);
+                css += fs.readFileSync(cur_file, 'utf-8');
+            } else if (fs.lstatSync(cur_file).isDirectory()) {
+                getCSSAndReturn(cur_file);
+            }
+        
         });
         emitter.emit('getCss_ok');
     }
@@ -291,6 +315,10 @@ function parseCss () {
             log('[e] Empty CSS provided');
             throw 'Empty CSS provided';
         }
+
+        // replace template variables with empty string, to avoid parse errors.
+        // everything between < > is considered template language
+        css = css.replace(/<[^<>].*>/g, '');
 
         tree = new cssParser(css);
     }
