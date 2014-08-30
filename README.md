@@ -8,11 +8,11 @@ Install the module with: `npm -g install cssi`
 ## Documentation
 ```
 cssi
---css: file | dir | url
---repo: /full/path/to/local/repo
+--css: file | dir | url - css to be parsed
+--repo: /full/path/to/local/repo - local repo where git-grep will search for css
 --reverse: finds not the last, but the first commit where the selector was changed
 --exclude: "string" or ["array", "of", "strings"] - exclude selectors that contains these strings, to avoid known false positives like icon fonts
---tpl: "*.ext" - glob of files that should be checked for selectors. Default: "'*.tmpl' '*.inc' '*.js'"
+--tpl: "*.ext" - glob of files that should be checked for selectors. Default = "'*.tmpl' '*.inc' '*.js'"
 --debug: shows extra debug information
 --out: filename.html - different report filename. Default is a normalized version of css_path-filename.html
 --link: "https://github.com/bitbonsai/cssi/commit/{sha}" - link to web git show. Can be any valid URL, {sha} is replaced with commit hash

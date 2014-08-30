@@ -175,22 +175,27 @@ function request(requestOptions, callback) {
     });
 }
 
-// show Usage TODO: load from external file
 function help () {
     
+    var doc = fs.readFileSync(process.mainModule.filename.replace('/bin/cssi.js', '/lib/help.man'), "utf8");
+    var man = doc.split('\n');
     var h = [];
+    var args, options_instructions, formatted_args, instructions, options;
+
     h.push('');
     h.push('CSSI: '.debug + require('../package.json').version.cyan);
     h.push('Usage:'.warn + ' cssi --css bla.css --repo /path/to/repo');
-    h.push('--css'.debug + '     [file | dir | url]'.cyan);
-    h.push('--repo'.debug + '    [/full/path/to/local/repo]'.cyan);
-    h.push('--reverse'.debug + ' finds not the last, but the first commit where the selector was changed');
-    h.push('--exclude'.debug + ' [bicon]'.cyan + ' exclude string from selectors, useful to avoid known false positives - ie: icon fonts');
-    h.push('--tpl'.debug + '     ["*.ext"]'.cyan + ' glob of files that should be checked for selectors. Default: "\'*.tmpl\' \'*.inc\' \'*.js\'"');
-    h.push('--debug'.debug + '   shows extra debug information');
-    h.push('--out'.debug + '     [filename.html]'.cyan + ' different report filename. Default is a normalized version of css_path-filename.html');
-    h.push('--link'.debug + '  ["https://github.com/bitbonsai/cssi/commit/{sha}"]'.cyan + ' link to web git show. Can be any valid URL, {sha} is replaced with commit hash');
-    h.push('--config'.debug + '  [filename.json]'.cyan + ' load or replace arguments from config file (must be valid json)');
+
+    man.forEach(function (m) {
+        args = m.split(': ');
+        options_instructions = args[1].split(' - ');
+        formatted_args = args[0] + ':' + Array(12).join(' ').substring(args[0].length + 1); //quick way to format arguments
+        instructions = (options_instructions[1]) ? ' - ' + options_instructions[1] : '';
+        options = (!!options_instructions[1]) ? options_instructions[0].cyan : options_instructions[0];
+
+        h.push(formatted_args.debug + options + instructions);
+    });
+
     h.push('More info at https://github.com/bitbonsai/cssi'.warn);
     h.push('');
 
