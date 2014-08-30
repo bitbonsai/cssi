@@ -429,11 +429,32 @@ function grepCss () {
 function grepMe (str, idx, all_len, ids_len) {
     var id_or_class,
         ghost_key,
-        cmd;
+        cmd,
+        i,
+        exc = false;
 
     log('[d] grepping %s', str);
 
     cmd = "cd "+ repo +" && git grep -q '"+ str +"' -- " + files_to_grep;
+
+    // if current selector is a false positive, let's save a run()
+    if (opt.exclude) {
+        if (opt.exclude instanceof Array) {
+            for (i = 0; i < opt.exclude.length; i++) {
+                if (str.indexOf(opt.exclude[i]) > -1) {
+                    exc = true;
+                    break;
+                }
+            }
+        } else {
+            if (str.indexOf(opt.exclude) > -1) {
+                exc = true;
+            }
+        }
+        if (exc) {
+            return;
+        }
+    }
 
     run(cmd, function (err) {
 
@@ -446,17 +467,9 @@ function grepMe (str, idx, all_len, ids_len) {
                 ghost_key = 'classes';
             }
 
-            if (opt.exclude) {
-                if (str.indexOf(opt.exclude) < 0) {
-                    ghosts[ghost_key].push(str);
-                    ghosts_len++;
-                    log('[w] NOT FOUND: '+ id_or_class +'%s', str);
-                }
-            } else {
-                ghosts[ghost_key].push(str);
-                ghosts_len++;
-                log('[w] NOT FOUND: '+ id_or_class +'%s', str);
-            }
+            ghosts[ghost_key].push(str);
+            ghosts_len++;
+            log('[w] NOT FOUND: '+ id_or_class +'%s', str);
         }
         if (ghosts_count === all_len) {
             emitter.emit('grepCss_ok');

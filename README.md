@@ -8,15 +8,15 @@ Install the module with: `npm -g install cssi`
 ## Documentation
 ```
 cssi
---css [file | dir | url]
---repo [/full/path/to/local/repo]
---reverse finds not the last, but the first commit where the selector was changed
---exclude [bicon] exclude string from selectors, useful to avoid known false positives - ie: icon fonts
---tpl ["*.ext"] glob of files that should be checked for selectors. Default: "'*.tmpl' '*.inc' '*.js'"
---debug shows extra debug information
---out [filename.html] different report filename. Default is a normalized version of css_path-filename.html
---link ["https://github.com/bitbonsai/cssi/commit/{sha}"] link to web git show. Can be any valid URL, {sha} is replaced with commit hash
---config [file.json] load or replace arguments from config file (must be valid json)
+--css: file | dir | url
+--repo: /full/path/to/local/repo
+--reverse: finds not the last, but the first commit where the selector was changed
+--exclude: "string" or ["array", "of", "strings"] - exclude selectors that contains these strings, to avoid known false positives like icon fonts
+--tpl: "*.ext" - glob of files that should be checked for selectors. Default: "'*.tmpl' '*.inc' '*.js'"
+--debug: shows extra debug information
+--out: filename.html - different report filename. Default is a normalized version of css_path-filename.html
+--link: "https://github.com/bitbonsai/cssi/commit/{sha}" - link to web git show. Can be any valid URL, {sha} is replaced with commit hash
+--config: file.json - load or replace arguments from config file (must be valid json)
 ```
 
 ## Examples
@@ -31,6 +31,7 @@ cssi
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+- 0.5.x - --exclude now accepts string or array of strings to ignore
 - 0.4.x - Added counter and report for original_selectors
 - 0.3.x - Added --link, js sort to table, selector count
 - 0.2.x - Added option to load config file
