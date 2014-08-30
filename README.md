@@ -8,6 +8,8 @@ Install the module with: `npm -g install cssi`
 ## Documentation
 ```
 cssi
+Usage: cssi --css bla.css --repo /path/to/repo [options]
+
 --css:     file | dir | url - css to be parsed
 --repo:    /full/path/to/local/repo - local repo where git-grep will search for css
 --reverse: finds not the last, but the first commit where the selector was changed

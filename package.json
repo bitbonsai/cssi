@@ -1,7 +1,7 @@
 {
   "name": "cssi",
   "description": "CSS Selector Scene Investigation. Analyses a git codebase for unused CSS selectors against a given CSS files set",
-  "version": "0.5.2",
+  "version": "0.5.3",
   "homepage": "https://github.com/bitbonsai/cssi",
   "author": {
     "name": "Mauricio Wolff",

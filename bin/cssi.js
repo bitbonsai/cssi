@@ -184,7 +184,7 @@ function help () {
 
     h.push('');
     h.push('CSSI: '.debug + require('../package.json').version.cyan);
-    h.push('Usage:'.warn + ' cssi --css bla.css --repo /path/to/repo');
+    h.push('Usage:'.warn + ' cssi --css bla.css --repo /path/to/repo [options]');
 
     man.forEach(function (m) {
         args = m.split(': ');
