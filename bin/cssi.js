@@ -457,6 +457,7 @@ function grepMe (str, idx, all_len, ids_len) {
             }
         }
         if (exc) {
+            ghosts_count++;
             return;
         }
     }
