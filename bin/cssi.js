@@ -321,15 +321,18 @@ function parseCss () {
         css = css.replace(/<[^<>].*>/g, '');
 
         tree = new cssParser(css);
+
+        emitter.emit('parseCss_ok');
     }
     catch(ex) {
         var errMsg = 'CSS parsing failed: ' + ex.toString();
         log('[e] ' + errMsg);
-        log('[e] Offending line: ' + css.split('\n')[ex.line-1]);
+        log('[e] Offending line: ' + css.split('\n')[ex.line-1].toString().substr(0,70) + '[...]');
+        log('[e] Fix the CSS and try again.');
+        log('[w] Offending source: %s', opt.css);
     }
     
     log('[d] CSS parsed!');
-    emitter.emit('parseCss_ok');
 }
 
 function parseRules () {
