@@ -5,6 +5,8 @@ cssi: **CSS Selector Scene Investigation**. Analyses a git codebase for unused C
 ## Getting Started
 Install the module with: `npm -g install cssi`
 
+npmjs link: [https://www.npmjs.org/package/cssi](https://www.npmjs.org/package/cssi)
+
 ## Documentation
 ```
 cssi
