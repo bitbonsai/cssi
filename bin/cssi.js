@@ -600,6 +600,7 @@ function createReport () {
     var tr = fs.readFileSync(process.mainModule.filename.replace('/bin/cssi.js', '/lib/report_tpl_tr.html'), "utf8");
     var trs = [];
     var li = '<li><b>{param}</b>: {val}</li>';
+    var cmd = 'cssi ' + process.argv.slice(2).join(' ');
     var param;
     var params = [];
     var i, prop, props = [], hash, dupes;
@@ -626,7 +627,7 @@ function createReport () {
         }
         dupes = getOriginalDuplicates();
         log('[d] dupes', dupes);
-        tpl = tpl.replace(/\{filename\}/g, report_name).replace('{params}', params.join('')).replace('{trs}', trs.join('')).replace('{dupes}', dupes);
+        tpl = tpl.replace(/\{filename\}/g, report_name).replace('{cmd}', cmd).replace('{params}', params.join('')).replace('{trs}', trs.join('')).replace('{dupes}', dupes);
     }
 
     fs.writeFileSync(report_name, tpl, {"encoding": "utf-8"});
