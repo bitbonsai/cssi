@@ -51,10 +51,10 @@
     "webperf"
   ],
   "dependencies": {
-    "colors": "^0.6.2",
-    "css-parse": "^2.0.0",
-    "event-emitter": "^0.3.1",
+    "colors": "0.6.2",
+    "css-parse": "2.0.0",
+    "event-emitter": "0.3.4",
     "exec-queue": "0.0.2",
-    "minimist": "^1.1.0"
+    "minimist": "1.2.0"
   }
 }
