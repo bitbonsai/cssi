@@ -1,6 +1,15 @@
-![cssi](https://dl.dropboxusercontent.com/u/463427/cssi_logo.png)
+<img src="data:image/gif;base64,R0lGODlhFQAJAIAAACMtMP///yH5BAEAAAEALAAAAAAVAAkAAAIXjI+AywnaYnhUMoqt3gZXPmVg94yJVQAAOw==" alt="CSSI logo" />
 
 cssi: **CSS Selector Scene Investigation**. Analyses a git codebase for unused CSS selectors
+
+Give it a css file and a git repo, and CSSI will find unused selectors and put it in a report for you, with selectors, commit date and commit messages.
+
+You can specify a template extension, like `.tmpl`, `.html` or `.inc` to find where selectors are applied, a well as exclude certain selectors.
+
+All options can be passed in a JSON file with the `--config` flag.
+
+### Why not just delete them?
+Because too much automation is not always a good thing. With CSSI report you can check dates and commit messages, delete the selector if you want as a new commit and revert if something breaks.
 
 ## Getting Started
 Install the module with: `npm -g install cssi`
@@ -24,7 +33,7 @@ Usage: cssi --css bla.css --repo /path/to/repo [options]
 ```
 
 ## Examples
-1. `cssi --css css/sample_gen_profile.css --repo /Users/local_repo/ --exclude bicon`
+1. `cssi --css css/sample_gen_profile.css --repo /Users/local_repo/ --exclude icon`
 2. `cssi --css css/ --repo /Users/local_repo/`
 3. `cssi --css css/ --repo /Users/local_repo/ --tpl "'*.html' '*.php'" --out myreportname.html --reverse`
 4. `cssi --css css/ --repo /Users/local_repo/ --config filename.json`
