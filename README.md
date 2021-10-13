@@ -51,7 +51,7 @@ Clone this repo to your machine and run the following command:
 
 You'll see:
 
-![CSSI output](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/87075916-421c-43ed-b753-ed1b970562a6/carbon%281%29.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211013%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211013T021745Z&X-Amz-Expires=86400&X-Amz-Signature=4b7034873beb5123f019b4611e3751cae6e832a22d71b3ee902b1522cddcdb48&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22carbon%281%29.png%22)
+![CSSI output](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d2a1ae1c-c161-4b15-9df4-808b0b842631/carbon_%281%29.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211013%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211013T025821Z&X-Amz-Expires=86400&X-Amz-Signature=a277c3130b6a303a49157201c6febbe79e945bd0f8f8bcda417d471ee3a51795&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22carbon%2520%281%29.png%22)
 
 And `cssi` will have generated a report called `test.html`, that will look like this:
 
