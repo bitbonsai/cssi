@@ -1,6 +1,6 @@
 <img class="logo" alt="cssi" src="https://s3.us-west-2.amazonaws.com/secure.notion-static.com/e4156fa4-573c-46b4-9567-de0a1d78e790/cssi.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211013%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211013T012242Z&X-Amz-Expires=86400&X-Amz-Signature=f80274462eeb37d32652cb11fcd46b71478f9f6fce9f39e1d2e59a546d9b92ef&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22cssi.png%22" />
 
-cssi: **CSS Selector Scene Investigation**. Analyses a git codebase for unused CSS selectors
+`cssi`: **CSS Selector Scene Investigation**. Analyses a git codebase for unused CSS selectors
 
 Give it a css file and a git repo, and CSSI will find unused selectors and put it in a report for you, with selectors, commit date and commit messages.
 
