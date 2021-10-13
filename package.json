@@ -35,10 +35,10 @@
     "validthis": true
   },
   "devDependencies": {
-    "grunt-contrib-jshint": "~0.6.4",
-    "grunt-contrib-nodeunit": "~0.2.0",
-    "grunt-contrib-watch": "~0.5.3",
-    "grunt": "~0.4.5"
+    "grunt": "^1.4.1",
+    "grunt-contrib-jshint": "^3.1.1",
+    "grunt-contrib-nodeunit": "^4.0.0",
+    "grunt-contrib-watch": "^1.1.0"
   },
   "preferGlobal": "true",
   "bin": {
@@ -55,6 +55,6 @@
     "css-parse": "2.0.0",
     "event-emitter": "0.3.4",
     "exec-queue": "0.0.2",
-    "minimist": "1.2.0"
+    "minimist": "^1.2.5"
   }
 }
