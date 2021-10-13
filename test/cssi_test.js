@@ -2,6 +2,8 @@
 
 var cssi = require('../lib/cssi.js');
 
+// IF YOU WANT TO WRITE TESTS, FEEL FREE AS A BIRD!
+
 /*
   ======== A Handy Little Nodeunit Reference ========
   https://github.com/caolan/nodeunit

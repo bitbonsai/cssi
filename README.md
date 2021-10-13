@@ -39,6 +39,25 @@ Usage: cssi --css bla.css --repo /path/to/repo [options]
 4. `cssi --css css/ --repo /Users/local_repo/ --config filename.json`
 5. `cssi --css http://example.com/site.css --repo /Users/local_repo/ --debug`
 
+## Testing it
+There's a `test` directory with few files:
+
+- test.css
+- test_template.html
+
+Clone this repo to your machine and run the following command:
+
+`cssi --css test.css --repo [/FULL/PATH/TO/CSSI/REPO] --tpl "*.html"`
+
+You'll see:
+
+![CSSI output](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/d2a1ae1c-c161-4b15-9df4-808b0b842631/carbon_%281%29.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211013%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211013T025821Z&X-Amz-Expires=86400&X-Amz-Signature=a277c3130b6a303a49157201c6febbe79e945bd0f8f8bcda417d471ee3a51795&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22carbon%2520%281%29.png%22)
+
+And `cssi` will have generated a report called `test.html`, that will look like this:
+
+![Report output](https://s3.us-west-2.amazonaws.com/secure.notion-static.com/cd6a107f-0901-4909-a6d8-7fe16a23cd86/Screen_Shot_2021-10-13_at_1.24.09_pm.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAT73L2G45O3KS52Y5%2F20211013%2Fus-west-2%2Fs3%2Faws4_request&X-Amz-Date=20211013T022434Z&X-Amz-Expires=86400&X-Amz-Signature=28a592abbc02ed5bc0a084f501746eb7f1391f7aec4f2b954febb66f1ca37ef3&X-Amz-SignedHeaders=host&response-content-disposition=filename%20%3D%22Screen%2520Shot%25202021-10-13%2520at%25201.24.09%2520pm.png%22)
+
+Tip: if you try to run again won't work, because the missing selector appears on the report 😂. Delete the report and run again.
 
 ## Contributing
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
